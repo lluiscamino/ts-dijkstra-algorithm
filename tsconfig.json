@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "ES2017",
+    "outDir": "ts-built",
+    "rootDir": "src",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

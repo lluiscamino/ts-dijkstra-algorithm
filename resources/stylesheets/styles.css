@@ -1,0 +1,56 @@
+@media only screen and (max-width: 600px) {
+    .container {
+        float: none !important;
+        width: 100% !important;
+        height: 120% !important;
+    }
+    #actionsContainer {
+        margin-top: 5px !important;
+    }
+    /* TODO: fix this: */
+    /*.node {
+        transform: scale(0.5);
+    }*/
+}
+body {
+    font-family: Roboto, Verdana, Arial;
+}
+.container {
+    padding: 1%;
+    color: white;
+    height: 94vh;
+    background-color: #333;
+    overflow: hidden;
+    border-radius: 7px;
+}
+#nodesContainer {
+    float: left;
+    width: 70%;
+    margin-right: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+}
+#actionsContainer {
+    width: 25%;
+}
+.node {
+    padding: 25px;
+    text-align: center;
+    border: 10px solid;
+    border-radius: 50%;
+    touch-action: none;
+    user-select: none;
+    position: relative;
+    cursor: pointer;
+    opacity: 0.9;
+}
+.node:active {
+    opacity: 1;
+}
+#shortestPathResult:not(:empty) {
+    border: 1px solid aliceblue;
+    padding: 5px;
+    border-radius: 2px;
+}
