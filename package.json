@@ -1,0 +1,25 @@
+{
+  "name": "ts-dijkstra-algorithm",
+  "version": "1.0.0",
+  "description": "TypeScript implementation of Dijkstra's algorithm ",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lluiscamino/ts-dijkstra-algorithm.git"
+  },
+  "keywords": [
+    "dijkstra-algorithm"
+  ],
+  "author": "Lluís Camino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lluiscamino/ts-dijkstra-algorithm/issues"
+  },
+  "homepage": "https://github.com/lluiscamino/ts-dijkstra-algorithm#readme",
+  "dependencies": {
+    "leader-line": "^1.0.5"
+  }
+}
