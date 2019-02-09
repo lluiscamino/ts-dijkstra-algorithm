@@ -29,7 +29,8 @@ export class Node {
        destinySelect.innerHTML = '<option selected disabled>Destiny</option>';
        for (let node of Node.nodes) {
            nodeList.innerHTML += '<li>' + node.value + '</li>';
-           originSelect.innerHTML = destinySelect.innerHTML += '<option value="' + numNodes + '">' + node.value + '</option>';
+           originSelect.innerHTML += '<option value="' + numNodes + '">' + node.value + '</option>';
+           destinySelect.innerHTML += '<option value="' + numNodes + '">' + node.value + '</option>';
            Link.updateArrows(node.element);
            numNodes++;
        }
