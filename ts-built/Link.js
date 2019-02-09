@@ -28,6 +28,11 @@ export class Link {
             linkList.innerHTML = '<li><i>No linked nodes.</i></li>';
         }
     }
+    static unHighlightAll() {
+        for (let link of Link.links) {
+            link.unhighlight();
+        }
+    }
     static updateArrows(nodeElement) {
         for (let link of Link.links) {
             if (link.node1.element === nodeElement || link.node2.element === nodeElement) {
@@ -35,10 +40,27 @@ export class Link {
             }
         }
     }
+    static getLinkByNodes(node1, node2) {
+        for (let link of Link.links) {
+            if ((link.node1 === node1 && link.node2 === node2) || (link.node1 === node2 && link.node2 === node1)) {
+                return link;
+            }
+        }
+        throw new Error('There is not a link between the given nodes');
+    }
     generateArrow() {
         if (this.arrow === null) {
             // @ts-ignore
-            this.arrow = new LeaderLine(this.node1.element, this.node2.element);
+            this.arrow = new LeaderLine(this.node1.element, this.node2.element, {
+                color: 'white',
+                path: 'straight',
+                endPlug: 'behind',
+                // @ts-ignore
+                middleLabel: LeaderLine.pathLabel({
+                    text: String(this.distance),
+                    fontWeight: 'lighter'
+                })
+            });
         }
         else {
             // @ts-ignore
@@ -48,6 +70,12 @@ export class Link {
     deleteArrow() {
         // @ts-ignore
         this.arrow.remove();
+    }
+    highlight() {
+        this.arrow.color = 'orange';
+    }
+    unhighlight() {
+        this.arrow.color = 'white';
     }
     create() {
         Link.links.push(this);

@@ -14,6 +14,7 @@ document.getElementById('createNodeForm').addEventListener('submit', function (e
 });
 document.getElementById('shortestPathForm').addEventListener('submit', function (event) {
     event.preventDefault();
+    Link.unHighlightAll();
     let adjMatrix = new AdjacencyMatrix(Node.nodes, Link.links);
     let origin = parseInt(document.getElementById('originSelect').value);
     let destiny = parseInt(document.getElementById('destinySelect').value);
@@ -24,6 +25,10 @@ document.getElementById('shortestPathForm').addEventListener('submit', function 
     let path = [];
     while (actualNode !== undefined) {
         path.unshift(actualNode);
+        if (predecessors[actualNode] !== undefined) {
+            let actualLink = Link.getLinkByNodes(Node.nodes[actualNode], Node.nodes[predecessors[actualNode]]);
+            actualLink.highlight();
+        }
         actualNode = predecessors[actualNode];
     }
     let shortestPathResult = document.getElementById('shortestPathResult');

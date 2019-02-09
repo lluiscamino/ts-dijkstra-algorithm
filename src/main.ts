@@ -17,6 +17,7 @@ document.getElementById('createNodeForm').addEventListener('submit', function(ev
 
 document.getElementById('shortestPathForm').addEventListener('submit', function(event: any): void {
     event.preventDefault();
+    Link.unHighlightAll();
     let adjMatrix: AdjacencyMatrix = new AdjacencyMatrix(Node.nodes, Link.links);
     let origin: number = parseInt((document.getElementById('originSelect') as HTMLInputElement).value);
     let destiny: number = parseInt((document.getElementById('destinySelect') as HTMLInputElement).value);
@@ -27,6 +28,10 @@ document.getElementById('shortestPathForm').addEventListener('submit', function(
     let path: number[] = [];
     while (actualNode !== undefined) {
         path.unshift(actualNode);
+        if (predecessors[actualNode] !== undefined) {
+            let actualLink: Link = Link.getLinkByNodes(Node.nodes[actualNode], Node.nodes[predecessors[actualNode]]);
+            actualLink.highlight();
+        }
         actualNode = predecessors[actualNode];
     }
     let shortestPathResult: HTMLElement = document.getElementById('shortestPathResult');
