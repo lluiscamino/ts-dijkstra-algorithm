@@ -47,7 +47,7 @@ export class Node {
         this.element = document.createElement('div');
         this.element.classList.add('node');
         this.element.innerHTML = this.value + '<br>';
-        this.element.draggable = true;
+        this.element.draggable = this.element.draggable = navigator.userAgent.indexOf('Firefox') !== -1;
         //this.element.style.left =;
         //this.element.style.top =;
         this.element.style.width = this.element.style.height = this.size + 'px';
