@@ -38,6 +38,12 @@ export class Link {
         }
     }
 
+    static unHighlightAll() {
+        for (let link of Link.links) {
+            link.unhighlight();
+        }
+    }
+
     static updateArrows(nodeElement: HTMLElement): void {
         for (let link of Link.links) {
             if (link.node1.element === nodeElement || link.node2.element === nodeElement) {
@@ -46,10 +52,28 @@ export class Link {
         }
     }
 
+    static getLinkByNodes(node1: Node, node2: Node): Link {
+       for (let link of Link.links) {
+           if ((link.node1 === node1 && link.node2 === node2) || (link.node1 === node2 && link.node2 === node1)) {
+               return link;
+           }
+       }
+       throw new Error('There is not a link between the given nodes');
+    }
+
     private generateArrow(): void {
         if (this.arrow === null) {
             // @ts-ignore
-            this.arrow = new LeaderLine(this.node1.element, this.node2.element);
+            this.arrow = new LeaderLine(this.node1.element, this.node2.element, {
+                color: 'white',
+                path: 'straight',
+                endPlug: 'behind',
+                // @ts-ignore
+                middleLabel: LeaderLine.pathLabel({
+                    text: String(this.distance),
+                    fontWeight: 'lighter'
+                })
+            });
         } else {
             // @ts-ignore
             this.arrow.position();
@@ -59,6 +83,14 @@ export class Link {
     private deleteArrow(): void {
         // @ts-ignore
         this.arrow.remove();
+    }
+
+    highlight(): void {
+        this.arrow.color = 'orange';
+    }
+
+    unhighlight(): void {
+        this.arrow.color = 'white';
     }
 
     create(): void {
