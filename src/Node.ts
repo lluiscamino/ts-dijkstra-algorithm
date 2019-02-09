@@ -43,15 +43,38 @@ export class Node {
        if (Node.lastLinkedNode !== null) {
            // TODO: check if they're already linked
            if (Node.lastLinkedNode === node) {
-               throw new Error('You should not link a node with itself.');
+               throw new Error('You cannot not link a node with itself.');
            }
            let distance: number = parseInt(prompt('Enter distance between nodes'));
+           let linkButton: HTMLElement = Node.lastLinkedNode.element.childNodes[2] as HTMLElement;
+           linkButton.style.opacity = '1';
+           linkButton.style.cursor = 'pointer';
+           // @ts-ignore
+           new Noty({
+               theme: 'relax',
+               type: 'success',
+               layout: 'topLeft',
+               text: 'Nodes <strong>' + Node.lastLinkedNode.value + '</strong> and <strong>' + node.value + '</strong> linked.',
+               timeout: 3000,
+               killer: true
+           }).show();
            let link: Link = new Link(Node.lastLinkedNode, node, distance);
            link.create();
            Node.lastLinkedNode.links.push(link);
            node.links.push(link);
            Node.lastLinkedNode = null;
        } else {
+           // @ts-ignore
+           new Noty({
+               theme: 'relax',
+               type: 'info',
+               layout: 'topLeft',
+               text: 'Click on the link button of another node to link it with <strong>' + node.value + '</strong>.',
+               killer: true
+           }).show();
+           let linkButton: HTMLElement = node.element.childNodes[2] as HTMLElement;
+           linkButton.style.opacity = '0.4';
+           linkButton.style.cursor = 'not-allowed';
            Node.lastLinkedNode = node;
        }
    }

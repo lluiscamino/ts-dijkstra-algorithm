@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/lluiscamino/ts-dijkstra-algorithm#readme",
   "dependencies": {
-    "leader-line": "^1.0.5"
+    "leader-line": "^1.0.5",
+    "noty": "^3.2.0-beta"
   }
 }
