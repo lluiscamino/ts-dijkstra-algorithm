@@ -30,9 +30,21 @@ export class Node {
         if (Node.lastLinkedNode !== null) {
             // TODO: check if they're already linked
             if (Node.lastLinkedNode === node) {
-                throw new Error('You should not link a node with itself.');
+                throw new Error('You cannot not link a node with itself.');
             }
             let distance = parseInt(prompt('Enter distance between nodes'));
+            let linkButton = Node.lastLinkedNode.element.childNodes[2];
+            linkButton.style.opacity = '1';
+            linkButton.style.cursor = 'pointer';
+            // @ts-ignore
+            new Noty({
+                theme: 'relax',
+                type: 'success',
+                layout: 'topLeft',
+                text: 'Nodes <strong>' + Node.lastLinkedNode.value + '</strong> and <strong>' + node.value + '</strong> linked.',
+                timeout: 3000,
+                killer: true
+            }).show();
             let link = new Link(Node.lastLinkedNode, node, distance);
             link.create();
             Node.lastLinkedNode.links.push(link);
@@ -40,6 +52,17 @@ export class Node {
             Node.lastLinkedNode = null;
         }
         else {
+            // @ts-ignore
+            new Noty({
+                theme: 'relax',
+                type: 'info',
+                layout: 'topLeft',
+                text: 'Click on the link button of another node to link it with <strong>' + node.value + '</strong>.',
+                killer: true
+            }).show();
+            let linkButton = node.element.childNodes[2];
+            linkButton.style.opacity = '0.4';
+            linkButton.style.cursor = 'not-allowed';
             Node.lastLinkedNode = node;
         }
     }
@@ -47,7 +70,7 @@ export class Node {
         this.element = document.createElement('div');
         this.element.classList.add('node');
         this.element.innerHTML = this.value + '<br>';
-        this.element.draggable = this.element.draggable = navigator.userAgent.indexOf('Firefox') !== -1;
+        this.element.draggable = navigator.userAgent.indexOf('Firefox') !== -1;
         //this.element.style.left =;
         //this.element.style.top =;
         this.element.style.width = this.element.style.height = this.size + 'px';
