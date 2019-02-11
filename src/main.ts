@@ -4,7 +4,7 @@ import {AdjacencyMatrix} from './AdjacencyMatrix.js';
 
 /* Create default initial node */
 let initialNode: Node = new Node('Node 1', 120, 'green');
-initialNode.create();
+initialNode.create(false);
 
 document.getElementById('createNodeForm').addEventListener('submit', function(event: any): void {
     event.preventDefault();
@@ -13,30 +13,43 @@ document.getElementById('createNodeForm').addEventListener('submit', function(ev
     let color: string = (document.getElementById('color') as HTMLInputElement).value;
     let node: Node = new Node(value, size, color);
     node.create();
+    (document.getElementById('nodeValue') as HTMLInputElement).value = '';
 });
 
 document.getElementById('shortestPathForm').addEventListener('submit', function(event: any): void {
     event.preventDefault();
     Link.unHighlightAll();
-    let adjMatrix: AdjacencyMatrix = new AdjacencyMatrix(Node.nodes, Link.links);
-    let origin: number = parseInt((document.getElementById('originSelect') as HTMLInputElement).value);
-    let destiny: number = parseInt((document.getElementById('destinySelect') as HTMLInputElement).value);
-    let dijkstra: number[][] = adjMatrix.dijkstraAlgorithm(origin);
-    let predecessors: number[] = dijkstra[0];
-    let distance: number = dijkstra[1][destiny];
-    let actualNode: number = destiny;
-    let path: number[] = [];
-    while (actualNode !== undefined) {
-        path.unshift(actualNode);
-        if (predecessors[actualNode] !== undefined) {
-            let actualLink: Link = Link.getLinkByNodes(Node.nodes[actualNode], Node.nodes[predecessors[actualNode]]);
-            actualLink.highlight();
+    try {
+        let adjMatrix: AdjacencyMatrix = new AdjacencyMatrix(Node.nodes, Link.links);
+        let origin: number = parseInt((document.getElementById('originSelect') as HTMLInputElement).value);
+        let destiny: number = parseInt((document.getElementById('destinySelect') as HTMLInputElement).value);
+        let dijkstra: number[][] = adjMatrix.dijkstraAlgorithm(origin);
+        let predecessors: number[] = dijkstra[0];
+        let distance: number = dijkstra[1][destiny];
+        let actualNode: number = destiny;
+        let path: number[] = [];
+        while (actualNode !== undefined) {
+            path.unshift(actualNode);
+            if (predecessors[actualNode] !== undefined) {
+                let actualLink: Link = Link.getLinkByNodes(Node.nodes[actualNode], Node.nodes[predecessors[actualNode]]);
+                actualLink.highlight();
+            }
+            actualNode = predecessors[actualNode];
         }
-        actualNode = predecessors[actualNode];
+        let shortestPathResult: HTMLElement = document.getElementById('shortestPathResult');
+        for (let i: number = 0; i < path.length; i++) {
+            shortestPathResult.innerHTML += i !== path.length - 1 ? Node.nodes[path[i]].value + ' → ' : Node.nodes[path[i]].value;
+        }
+        shortestPathResult.innerHTML += ' (' + distance + ')<br>';
+    } catch (e) {
+        // @ts-ignore
+        new Noty({
+            theme: 'relax',
+            type: 'error',
+            layout: 'topLeft',
+            text: e.message,
+            timeout: 3000,
+            killer: true
+        }).show();
     }
-    let shortestPathResult: HTMLElement = document.getElementById('shortestPathResult');
-    for (let i: number = 0; i < path.length; i++) {
-        shortestPathResult.innerHTML += i !== path.length - 1 ? Node.nodes[path[i]].value + ' → ' : Node.nodes[path[i]].value;
-    }
-    shortestPathResult.innerHTML += ' (' + distance + ')<br>';
 });

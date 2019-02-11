@@ -49,15 +49,6 @@ export class Node {
            let linkButton: HTMLElement = Node.lastLinkedNode.element.childNodes[2] as HTMLElement;
            linkButton.style.opacity = '1';
            linkButton.style.cursor = 'pointer';
-           // @ts-ignore
-           new Noty({
-               theme: 'relax',
-               type: 'success',
-               layout: 'topLeft',
-               text: 'Nodes <strong>' + Node.lastLinkedNode.value + '</strong> and <strong>' + node.value + '</strong> linked.',
-               timeout: 3000,
-               killer: true
-           }).show();
            let link: Link = new Link(Node.lastLinkedNode, node, distance);
            link.create();
            Node.lastLinkedNode.links.push(link);
@@ -79,7 +70,7 @@ export class Node {
        }
    }
 
-   create(): void {
+   create(showNotification: boolean = true): void {
        this.element = document.createElement('div');
        this.element.classList.add('node');
        this.element.innerHTML = this.value + '<br>';
@@ -104,6 +95,17 @@ export class Node {
            Node.link(obj);
        };
        Node.CONTAINER.appendChild(this.element);
+       if (showNotification) {
+           // @ts-ignore
+           new Noty({
+               theme: 'relax',
+               type: 'success',
+               layout: 'topLeft',
+               text: 'Node <strong>' + this.value + '</strong> created.',
+               timeout: 3000,
+               killer: true
+           }).show();
+       }
        Node.updateList();
    }
 
@@ -113,15 +115,22 @@ export class Node {
        }
        Node.CONTAINER.removeChild(this.element);
        Node.nodes.splice(Node.nodes.indexOf(this), 1);
-       this.deleteAllLinks();
+       this.deleteAllLinks(false);
        Node.updateList();
+       // @ts-ignore
+       new Noty({
+           theme: 'relax',
+           type: 'warning',
+           layout: 'topLeft',
+           text: 'Node <strong>' + this.value + '</strong> deleted.',
+           timeout: 3000,
+           killer: true
+       }).show();
    }
 
-   deleteAllLinks(): void {
-       let i = 0;
+   deleteAllLinks(showNotification: boolean = true): void {
        for (let link of this.links) {
-           i++;
-           link.delete();
+           link.delete(showNotification);
        }
    }
 }
