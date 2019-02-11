@@ -25,10 +25,17 @@ export class AdjacencyMatrix {
         let distances = new Array(this.vertices.length).fill(Number.POSITIVE_INFINITY);
         let predecessors = new Array(this.vertices.length);
         distances[origin] = 0;
-        while (optimized.filter(function (x) { return x === false; }).length != 0) {
-            let v = distances.indexOf(Math.min(...distances.filter(function (distance) {
-                return !optimized[distances.indexOf(distance)];
-            })));
+        while (optimized.filter(function (x) { return !x; }).length != 0) {
+            let v;
+            let min = Number.POSITIVE_INFINITY;
+            let i = 0;
+            for (let dist of distances) {
+                if (dist < min && !optimized[i]) {
+                    v = i;
+                    min = dist;
+                }
+                i++;
+            }
             optimized[v] = true;
             for (let j = 0; j < this.matrix[v].length; j++) {
                 if (this.matrix[v][j] !== 0 && v !== j) {
