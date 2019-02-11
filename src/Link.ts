@@ -97,9 +97,18 @@ export class Link {
         Link.links.push(this);
         this.generateArrow();
         Link.updateList();
+        // @ts-ignore
+        new Noty({
+            theme: 'relax',
+            type: 'success',
+            layout: 'topLeft',
+            text: 'Nodes <strong>' + this.node1.value + '</strong> and <strong>' + this.node2.value + '</strong> linked.',
+            timeout: 3000,
+            killer: true
+        }).show();
     }
 
-    delete(): void {
+    delete(showNotification: boolean = true): void {
         let index: number = Link.links.indexOf(this);
         if (index > -1) {
             Link.links.splice(index, 1);
@@ -111,5 +120,14 @@ export class Link {
             throw new Error('You have to set the link first');
         }
         Link.updateList();
+        // @ts-ignore
+        new Noty({
+            theme: 'relax',
+            type: 'warning',
+            layout: 'topLeft',
+            text: 'Nodes <strong>' + this.node1.value + '</strong> and <strong>' + this.node2.value + '</strong> unlinked.',
+            timeout: 3000,
+            killer: true
+        }).show();
     }
 }

@@ -19,7 +19,7 @@ export class AdjacencyMatrix {
     }
     dijkstraAlgorithm(origin) {
         if (Node.nodes[origin].links.length === 0) {
-            throw new Error('Destiny node is not connected');
+            throw new Error('Origin node is not connected');
         }
         let optimized = new Array(this.vertices.length).fill(false);
         let distances = new Array(this.vertices.length).fill(Number.POSITIVE_INFINITY);
