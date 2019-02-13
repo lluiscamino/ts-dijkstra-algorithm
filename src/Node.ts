@@ -129,8 +129,8 @@ export class Node {
     }
 
     deleteAllLinks(showNotification: boolean = true): void {
-        for (let link of this.links) {
-            link.delete(showNotification);
+        while (this.links.length > 0) {
+            this.links[0].delete(showNotification);
         }
     }
 }

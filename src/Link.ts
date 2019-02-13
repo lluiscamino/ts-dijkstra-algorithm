@@ -75,13 +75,11 @@ export class Link {
                 })
             });
         } else {
-            // @ts-ignore
             this.arrow.position();
         }
     }
 
     private deleteArrow(): void {
-        // @ts-ignore
         this.arrow.remove();
     }
 
@@ -113,21 +111,22 @@ export class Link {
         if (index > -1) {
             Link.links.splice(index, 1);
             this.deleteArrow();
-            // TODO: fix this:
-            /*this.node1.links.splice(this.node1.links.indexOf(this), 1);
-            this.node2.links.splice(this.node2.links.indexOf(this), 1);*/
+            this.node1.links.splice(this.node1.links.indexOf(this), 1);
+            this.node2.links.splice(this.node2.links.indexOf(this), 1);
         } else {
             throw new Error('You have to set the link first');
         }
         Link.updateList();
-        // @ts-ignore
-        new Noty({
-            theme: 'relax',
-            type: 'warning',
-            layout: 'topLeft',
-            text: 'Nodes <strong>' + this.node1.value + '</strong> and <strong>' + this.node2.value + '</strong> unlinked.',
-            timeout: 3000,
-            killer: true
-        }).show();
+        if (showNotification) {
+            // @ts-ignore
+            new Noty({
+                theme: 'relax',
+                type: 'warning',
+                layout: 'topLeft',
+                text: 'Nodes <strong>' + this.node1.value + '</strong> and <strong>' + this.node2.value + '</strong> unlinked.',
+                timeout: 3000,
+                killer: true
+            }).show();
+        }
     }
 }
