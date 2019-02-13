@@ -55,9 +55,9 @@ export class AdjacencyMatrix {
     }
 
     toString(): string {
-        let result = '';
-        for (let i = 0; i < this.vertices.length; i++) {
-            for (let j = 0; j < this.vertices.length; j++) {
+        let result: string = '';
+        for (let i: number = 0; i < this.vertices.length; i++) {
+            for (let j: number = 0; j < this.vertices.length; j++) {
                 result += this.matrix[i][j] + ' ';
             }
             result += '\n';
