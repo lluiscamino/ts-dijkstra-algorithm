@@ -1,11 +1,17 @@
 import { Link } from './Link.js';
 export class Node {
     constructor(val, size, col) {
-        this.links = [];
+        this._links = [];
         this.value = val;
         this.size = size;
         this.color = col;
         Node.nodes.push(this);
+    }
+    get links() {
+        return this._links;
+    }
+    get element() {
+        return this._element;
     }
     static updateList() {
         let nodeList = document.getElementById('nodeList');
@@ -19,7 +25,7 @@ export class Node {
             nodeList.innerHTML += '<li>' + node.value + '</li>';
             originSelect.innerHTML += '<option value="' + numNodes + '">' + node.value + '</option>';
             destinySelect.innerHTML += '<option value="' + numNodes + '">' + node.value + '</option>';
-            Link.updateArrows(node.element);
+            Link.updateArrows(node._element);
             numNodes++;
         }
         if (nodeList.innerHTML === '') {
@@ -28,7 +34,7 @@ export class Node {
     }
     static link(node) {
         if (Node.lastLinkedNode !== null) {
-            let linkButton = Node.lastLinkedNode.element.childNodes[2];
+            let linkButton = Node.lastLinkedNode._element.childNodes[2];
             linkButton.style.opacity = '1';
             linkButton.style.cursor = 'pointer';
             if (Node.lastLinkedNode === node) {
@@ -42,8 +48,8 @@ export class Node {
             let distance = parseInt(prompt('Enter distance between nodes'));
             let link = new Link(Node.lastLinkedNode, node, distance);
             link.create();
-            Node.lastLinkedNode.links.push(link);
-            node.links.push(link);
+            Node.lastLinkedNode._links.push(link);
+            node._links.push(link);
             Node.lastLinkedNode = null;
         }
         else {
@@ -55,21 +61,21 @@ export class Node {
                 text: 'Click on the link button of another node to link it with <strong>' + node.value + '</strong>.',
                 killer: true
             }).show();
-            let linkButton = node.element.childNodes[2];
+            let linkButton = node._element.childNodes[2];
             linkButton.style.opacity = '0.4';
             linkButton.style.cursor = 'not-allowed';
             Node.lastLinkedNode = node;
         }
     }
     create(showNotification = true) {
-        this.element = document.createElement('div');
-        this.element.classList.add('node');
-        this.element.innerHTML = this.value + '<br>';
-        this.element.draggable = navigator.userAgent.indexOf('Firefox') !== -1;
+        this._element = document.createElement('div');
+        this._element.classList.add('node');
+        this._element.innerHTML = this.value + '<br>';
+        this._element.draggable = navigator.userAgent.indexOf('Firefox') !== -1;
         //this.element.style.left =;
         //this.element.style.top =;
-        this.element.style.width = this.element.style.height = this.size + 'px';
-        this.element.style.backgroundColor = this.color;
+        this._element.style.width = this._element.style.height = this.size + 'px';
+        this._element.style.backgroundColor = this.color;
         let linkImage = document.createElement('img');
         linkImage.title = linkImage.alt = 'Link with another node';
         linkImage.src = 'resources/images/link.png';
@@ -77,8 +83,8 @@ export class Node {
         deleteImage.title = deleteImage.alt = 'Delete node';
         deleteImage.src = 'resources/images/cross-button.png';
         let obj = this;
-        this.element.appendChild(linkImage);
-        this.element.appendChild(deleteImage);
+        this._element.appendChild(linkImage);
+        this._element.appendChild(deleteImage);
         deleteImage.onclick = function () {
             obj.delete();
         };
@@ -98,7 +104,7 @@ export class Node {
                 }).show();
             }
         };
-        Node.CONTAINER.appendChild(this.element);
+        Node.CONTAINER.appendChild(this._element);
         if (showNotification) {
             // @ts-ignore
             new Noty({
@@ -113,10 +119,10 @@ export class Node {
         Node.updateList();
     }
     delete() {
-        if (!this.element) {
+        if (!this._element) {
             throw new Error('You have to create the element first');
         }
-        Node.CONTAINER.removeChild(this.element);
+        Node.CONTAINER.removeChild(this._element);
         Node.nodes.splice(Node.nodes.indexOf(this), 1);
         this.deleteAllLinks(false);
         Node.updateList();
@@ -131,8 +137,8 @@ export class Node {
         }).show();
     }
     deleteAllLinks(showNotification = true) {
-        while (this.links.length > 0) {
-            this.links[0].delete(showNotification);
+        while (this._links.length > 0) {
+            this._links[0].delete(showNotification);
         }
     }
 }

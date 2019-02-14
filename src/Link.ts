@@ -1,7 +1,7 @@
 import {Node} from './Node.js';
 
 export class Link {
-    static links: Link[] = [];
+    static readonly links: Link[] = [];
 
     readonly node1: Node;
     readonly node2: Node;
