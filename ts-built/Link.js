@@ -28,6 +28,14 @@ export class Link {
             linkList.innerHTML = '<li><i>No linked nodes.</i></li>';
         }
     }
+    static areLinked(node1, node2) {
+        for (let link of node1.links) {
+            if (link.node1 === node2 || link.node2 === node2) {
+                return true;
+            }
+        }
+        return false;
+    }
     static unHighlightAll() {
         for (let link of Link.links) {
             link.unhighlight();

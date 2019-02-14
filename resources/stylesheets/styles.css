@@ -4,13 +4,12 @@
         width: 100% !important;
         height: 120% !important;
     }
+    #nodesContainer {
+        min-height: 355px;
+    }
     #actionsContainer {
         margin-top: 5px !important;
     }
-    /* TODO: fix this: */
-    /*.node {
-        transform: scale(0.5);
-    }*/
 }
 body {
     font-family: Roboto, Verdana, Arial;

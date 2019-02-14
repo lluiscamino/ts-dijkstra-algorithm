@@ -28,14 +28,18 @@ export class Node {
     }
     static link(node) {
         if (Node.lastLinkedNode !== null) {
-            // TODO: check if they're already linked
-            if (Node.lastLinkedNode === node) {
-                throw new Error('You cannot not link a node with itself.');
-            }
-            let distance = parseInt(prompt('Enter distance between nodes'));
             let linkButton = Node.lastLinkedNode.element.childNodes[2];
             linkButton.style.opacity = '1';
             linkButton.style.cursor = 'pointer';
+            if (Node.lastLinkedNode === node) {
+                Node.lastLinkedNode = null;
+                throw new Error('You cannot not link a node with itself.');
+            }
+            if (Link.areLinked(Node.lastLinkedNode, node)) {
+                Node.lastLinkedNode = null;
+                throw new Error('Nodes already linked, remove link first.');
+            }
+            let distance = parseInt(prompt('Enter distance between nodes'));
             let link = new Link(Node.lastLinkedNode, node, distance);
             link.create();
             Node.lastLinkedNode.links.push(link);
@@ -79,7 +83,20 @@ export class Node {
             obj.delete();
         };
         linkImage.onclick = function () {
-            Node.link(obj);
+            try {
+                Node.link(obj);
+            }
+            catch (e) {
+                // @ts-ignore
+                new Noty({
+                    theme: 'relax',
+                    type: 'error',
+                    layout: 'topLeft',
+                    text: e.message,
+                    timeout: 3000,
+                    killer: true
+                }).show();
+            }
         };
         Node.CONTAINER.appendChild(this.element);
         if (showNotification) {

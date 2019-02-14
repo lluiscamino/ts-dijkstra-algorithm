@@ -38,7 +38,16 @@ export class Link {
         }
     }
 
-    static unHighlightAll() {
+    static areLinked(node1: Node, node2: Node): boolean {
+        for (let link of node1.links) {
+            if (link.node1 === node2 || link.node2 === node2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static unHighlightAll(): void {
         for (let link of Link.links) {
             link.unhighlight();
         }
