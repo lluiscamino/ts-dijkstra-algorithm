@@ -1,15 +1,6 @@
 import {Link} from './Link.js';
 
 export class Node {
-
-    get links(): Link[] {
-        return this._links;
-    }
-
-    get element(): HTMLElement {
-        return this._element;
-    }
-
     static readonly CONTAINER = document.getElementById('nodesContainer');
     static readonly nodes: Node[] = [];
     private static lastLinkedNode: Node = null;
@@ -18,13 +9,26 @@ export class Node {
     readonly value: string;
     private readonly size: number;
     private readonly color: string;
+    private _coords: [number, number];
     private _links: Link[] = [];
 
-    constructor(val: string, size: number, col: string) {
+    constructor(val: string, size: number, col: string, coords: [number, number] = [0, 0]) {
         this.value = val;
         this.size = size;
         this.color = col;
-        Node.nodes.push(this);
+        this._coords = coords;
+    }
+
+    get coords(): [number, number] {
+        return this._coords;
+    }
+
+    get links(): Link[] {
+        return this._links;
+    }
+
+    get element(): HTMLElement {
+        return this._element;
     }
 
     private static updateList(): void {
@@ -87,17 +91,16 @@ export class Node {
         this._element.classList.add('node');
         this._element.innerHTML = this.value + '<br>';
         this._element.draggable = navigator.userAgent.indexOf('Firefox') !== -1;
-        //this.element.style.left =;
-        //this.element.style.top =;
         this._element.style.width = this._element.style.height = this.size + 'px';
         this._element.style.backgroundColor = this.color;
-        let linkImage = document.createElement('img');
+        this._element.style.transform = 'translate3d(' + this._coords[0] + 'px, ' + this._coords[1] + 'px, 0)';
+        let linkImage: HTMLImageElement = document.createElement('img');
         linkImage.title = linkImage.alt = 'Link with another node';
         linkImage.src = 'resources/images/link.png';
-        let deleteImage = document.createElement('img');
+        let deleteImage: HTMLImageElement = document.createElement('img');
         deleteImage.title = deleteImage.alt = 'Delete node';
         deleteImage.src = 'resources/images/cross-button.png';
-        let obj = this;
+        let obj: Node = this;
         this._element.appendChild(linkImage);
         this._element.appendChild(deleteImage);
         deleteImage.onclick = function (): void {
@@ -130,10 +133,16 @@ export class Node {
                 killer: true
             }).show();
         }
+        Node.nodes.push(this);
         Node.updateList();
     }
 
-    delete(): void {
+    setCoords(): void {
+        let transformCoords: string[] = this.element.style.transform.split(/\w+\(|\);?/)[1].split(/,\s?/g);
+        this._coords = [parseInt(transformCoords[0]), parseInt(transformCoords[1])];
+    }
+
+    delete(showNotification: boolean = true): void {
         if (!this._element) {
             throw new Error('You have to create the element first');
         }
@@ -141,15 +150,17 @@ export class Node {
         Node.nodes.splice(Node.nodes.indexOf(this), 1);
         this.deleteAllLinks(false);
         Node.updateList();
-        // @ts-ignore
-        new Noty({
-            theme: 'relax',
-            type: 'warning',
-            layout: 'topLeft',
-            text: 'Node <strong>' + this.value + '</strong> deleted.',
-            timeout: 3000,
-            killer: true
-        }).show();
+        if (showNotification) {
+            // @ts-ignore
+            new Noty({
+                theme: 'relax',
+                type: 'warning',
+                layout: 'topLeft',
+                text: 'Node <strong>' + this.value + '</strong> deleted.',
+                timeout: 3000,
+                killer: true
+            }).show();
+        }
     }
 
     deleteAllLinks(showNotification: boolean = true): void {

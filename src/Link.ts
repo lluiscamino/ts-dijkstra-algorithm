@@ -25,6 +25,7 @@ export class Link {
             let deleteLinkImage: HTMLImageElement = document.createElement('img');
             deleteLinkImage.title = deleteLinkImage.alt = 'Delete link';
             deleteLinkImage.src = 'resources/images/cross-button.png';
+            // TODO: this not necessary? check:
             let obj: Link = Link.links[numLinks];
             deleteLinkImage.onclick = function (): void {
                 obj.delete();
@@ -90,6 +91,7 @@ export class Link {
 
     private deleteArrow(): void {
         this.arrow.remove();
+        this.arrow = null;
     }
 
     highlight(): void {

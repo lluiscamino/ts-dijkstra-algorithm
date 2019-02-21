@@ -1,11 +1,14 @@
 import { Link } from './Link.js';
 export class Node {
-    constructor(val, size, col) {
+    constructor(val, size, col, coords = [0, 0]) {
         this._links = [];
         this.value = val;
         this.size = size;
         this.color = col;
-        Node.nodes.push(this);
+        this._coords = coords;
+    }
+    get coords() {
+        return this._coords;
     }
     get links() {
         return this._links;
@@ -72,10 +75,9 @@ export class Node {
         this._element.classList.add('node');
         this._element.innerHTML = this.value + '<br>';
         this._element.draggable = navigator.userAgent.indexOf('Firefox') !== -1;
-        //this.element.style.left =;
-        //this.element.style.top =;
         this._element.style.width = this._element.style.height = this.size + 'px';
         this._element.style.backgroundColor = this.color;
+        this._element.style.transform = 'translate3d(' + this._coords[0] + 'px, ' + this._coords[1] + 'px, 0)';
         let linkImage = document.createElement('img');
         linkImage.title = linkImage.alt = 'Link with another node';
         linkImage.src = 'resources/images/link.png';
@@ -116,9 +118,14 @@ export class Node {
                 killer: true
             }).show();
         }
+        Node.nodes.push(this);
         Node.updateList();
     }
-    delete() {
+    setCoords() {
+        let transformCoords = this.element.style.transform.split(/\w+\(|\);?/)[1].split(/,\s?/g);
+        this._coords = [parseInt(transformCoords[0]), parseInt(transformCoords[1])];
+    }
+    delete(showNotification = true) {
         if (!this._element) {
             throw new Error('You have to create the element first');
         }
@@ -126,15 +133,17 @@ export class Node {
         Node.nodes.splice(Node.nodes.indexOf(this), 1);
         this.deleteAllLinks(false);
         Node.updateList();
-        // @ts-ignore
-        new Noty({
-            theme: 'relax',
-            type: 'warning',
-            layout: 'topLeft',
-            text: 'Node <strong>' + this.value + '</strong> deleted.',
-            timeout: 3000,
-            killer: true
-        }).show();
+        if (showNotification) {
+            // @ts-ignore
+            new Noty({
+                theme: 'relax',
+                type: 'warning',
+                layout: 'topLeft',
+                text: 'Node <strong>' + this.value + '</strong> deleted.',
+                timeout: 3000,
+                killer: true
+            }).show();
+        }
     }
     deleteAllLinks(showNotification = true) {
         while (this._links.length > 0) {

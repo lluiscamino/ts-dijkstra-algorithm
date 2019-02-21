@@ -16,6 +16,7 @@ export class Link {
             let deleteLinkImage = document.createElement('img');
             deleteLinkImage.title = deleteLinkImage.alt = 'Delete link';
             deleteLinkImage.src = 'resources/images/cross-button.png';
+            // TODO: this not necessary? check:
             let obj = Link.links[numLinks];
             deleteLinkImage.onclick = function () {
                 obj.delete();
@@ -76,6 +77,7 @@ export class Link {
     }
     deleteArrow() {
         this.arrow.remove();
+        this.arrow = null;
     }
     highlight() {
         this.arrow.color = 'orange';

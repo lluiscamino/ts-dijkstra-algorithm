@@ -72,6 +72,6 @@ function drag(e: any): void {
     }
 }
 
-function setTranslate(xPos, yPos, el): void {
-    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+function setTranslate(xPos: number, yPos: number, el: HTMLElement): void {
+    el.style.transform = 'translate3d(' + xPos + 'px, ' + yPos + 'px, 0)';
 }

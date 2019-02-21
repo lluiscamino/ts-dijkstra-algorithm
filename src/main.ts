@@ -1,10 +1,15 @@
 import {Node} from './Node.js';
 import {Link} from './Link.js';
 import {AdjacencyMatrix} from './AdjacencyMatrix.js';
+import {Graph} from "./Graph.js";
 
 /* Create default initial node */
 let initialNode: Node = new Node('Node 1', 120, 'green');
 initialNode.create(false);
+
+/* Loads saved graphs */
+
+Graph.getSavedGraphs();
 
 document.getElementById('createNodeForm').addEventListener('submit', function(event: any): void {
     event.preventDefault();
@@ -52,4 +57,9 @@ document.getElementById('shortestPathForm').addEventListener('submit', function(
             killer: true
         }).show();
     }
+});
+
+document.getElementById('saveGraphButton').addEventListener('click', function(): void {
+    let graph: Graph = new Graph(Node.nodes, Link.links);
+    graph.save();
 });

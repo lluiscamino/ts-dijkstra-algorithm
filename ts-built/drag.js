@@ -61,6 +61,6 @@ function drag(e) {
     }
 }
 function setTranslate(xPos, yPos, el) {
-    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    el.style.transform = 'translate3d(' + xPos + 'px, ' + yPos + 'px, 0)';
 }
 //# sourceMappingURL=drag.js.map
