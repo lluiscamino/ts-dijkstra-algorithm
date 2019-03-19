@@ -14,11 +14,31 @@
 body {
     font-family: Roboto, Verdana, Arial;
 }
+input, button, select {
+    color: #34373b;
+    background-clip: padding-box;
+    border: 1px solid #bcc1c6;
+    border-radius: .25rem;
+    transition: 1s;
+}
+label {
+    float: left;
+    width: 87px;
+}
+select:invalid {
+    box-shadow: none;
+}
+button {
+    cursor: pointer;
+}
+button:hover {
+    background-color: #dedede;
+}
 .container {
     padding: 1%;
     color: white;
     height: 94vh;
-    background-color: #333;
+    background-color: rgb(161, 107, 107);
     overflow: auto;
     border-radius: 7px;
 }
