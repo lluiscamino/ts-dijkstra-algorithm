@@ -26,6 +26,9 @@ document.getElementById('shortestPathForm').addEventListener('submit', function 
         let dijkstra = adjMatrix.dijkstraAlgorithm(origin);
         let predecessors = dijkstra[0];
         let distance = dijkstra[1][destiny];
+        if (distance === Number.POSITIVE_INFINITY) {
+            throw new Error('Unable to find path between nodes');
+        }
         let actualNode = destiny;
         let path = [];
         while (actualNode !== undefined) {

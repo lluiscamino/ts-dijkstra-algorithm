@@ -35,7 +35,7 @@ export class AdjacencyMatrix {
             let min: number = Number.POSITIVE_INFINITY;
             let i: number = 0;
             for (let dist of distances) {
-                if (dist < min && !optimized[i]) {
+                if (dist <= min && !optimized[i]) {
                     v = i;
                     min = dist;
                 }
